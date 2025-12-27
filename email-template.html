@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Heightmax Analysis Report</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .email-container {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            border: 2px solid #e9ecef;
+        }
+        .header {
+            background: linear-gradient(135deg, #00C2A8 0%, #0A0E3F 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .logo {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .greeting {
+            font-size: 20px;
+            color: #0A0E3F;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        .intro {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        .analysis-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0A0E3F;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .analysis-content {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 4px solid #00C2A8;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            font-size: 15px;
+            line-height: 1.8;
+            color: #444;
+        }
+        .analysis-content h3 {
+            color: #0A0E3F;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .analysis-content h4 {
+            color: #0A0E3F;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .analysis-content ul {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        .analysis-content li {
+            margin: 8px 0;
+            color: #555;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+        .highlight-box h3 {
+            color: #1976d2;
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .cta-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+        }
+        .cta-button {
+            background: linear-gradient(135deg, #00C2A8 0%, #0A0E3F 100%);
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 194, 168, 0.3);
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+        .footer h3 {
+            color: #0A0E3F;
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .footer p {
+            color: #666;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .metric-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #00C2A8;
+        }
+        .metric-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #00C2A8 0%, #0A0E3F 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <div class="logo">🧬</div>
+            <h1>Heightmax</h1>
+            <p>Your Personalized Genetic Analysis Report</p>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">Hello {{name}}! 👋</div>
+            
+            <div class="intro">
+                Thank you for completing your Heightmax analysis! Below is your comprehensive genetic potential report based on your quiz responses. This personalized analysis reveals your unique growth trajectory and optimization opportunities.
+            </div>
+            
+            <div class="analysis-section">
+                <div class="section-title">
+                    📊 Your Genetic Analysis Results
+                </div>
+                <div class="analysis-content">
+                    {{analysis}}
+                </div>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>💡 Key Insights</h3>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li>Your genetic potential is unique and personalized to you</li>
+                    <li>Optimization during puberty can significantly maximize your growth</li>
+                    <li>Following the recommendations can help you reach your full potential</li>
+                    <li>Regular tracking helps monitor your progress effectively</li>
+                </ul>
+            </div>
+            
+            <div class="cta-section">
+                <h3 style="color: #0A0E3F; margin-bottom: 20px;">Ready to Maximize Your Potential?</h3>
+                <a href="https://heightmax.ai" class="cta-button">Visit Heightmax →</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <h3>Heightmax</h3>
+            <p>Discover and maximize your genetic potential</p>
+            <p>Questions? Contact us at sales@heightmax.ai</p>
+            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+                © 2025 Heightmax. All rights reserved.
+            </p>
+        </div>
+    </div>
+</body>
+</html> 

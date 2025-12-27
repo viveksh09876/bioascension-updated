@@ -1,0 +1,156 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Referral relationships
+  referralCode    ReferralCode? @relation("UserReferralCode")
+  usedReferral    ReferralCode? @relation("UsedReferral")
+  analyses        Analysis[]
+  quizSubmissions QuizSubmission[]
+  deviceFingerprints DeviceFingerprint[]
+  payments        Payment[]
+
+  @@map("users")
+}
+
+model ReferralCode {
+  id            Int      @id @default(autoincrement())
+  code          String   @unique
+  email         String
+  progress      Int      @default(0)
+  referralID    Int?     // ID of the referral code that was used by this user
+  analysis      String?  // Stored analysis for this referral
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationships
+  user          User?    @relation("UserReferralCode", fields: [userId], references: [id])
+  userId        Int?     @unique
+  usedBy        User?    @relation("UsedReferral", fields: [usedByUserId], references: [id])
+  usedByUserId  Int?     @unique
+
+  @@map("referral_codes")
+}
+
+model QuizSubmission {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  quizData  Json     // Store all quiz responses as JSON
+  isFreeUser Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  // Photo URLs from Vercel Blob
+  photo1YearAgoFront String?
+  photo1YearAgoSide  String?
+  photo1YearAgoBody  String?
+  photoNowFront      String?
+  photoNowSide       String?
+  photoNowBody       String?
+
+  // Relationships
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("quiz_submissions")
+}
+
+model Analysis {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  content   String   // The full analysis text
+  isFreeUser Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  // Relationships
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("analyses")
+}
+
+model EmailLog {
+  id        Int      @id @default(autoincrement())
+  email     String
+  name      String?
+  analysis  String
+  sentAt    DateTime @default(now())
+  status    String   @default("sent") // sent, failed, pending
+
+  @@map("email_logs")
+}
+
+model IpTracking {
+  id            Int      @id @default(autoincrement())
+  ipAddress     String
+  subnet        String   @unique
+  referralCount Int      @default(0)
+  lastReferralAt DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("ip_tracking")
+}
+
+model DeviceFingerprint {
+  id            Int      @id @default(autoincrement())
+  fingerprint   String   @unique
+  userId        Int?
+  referralCount Int      @default(0)
+  lastReferralAt DateTime?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationships
+  user          User?    @relation(fields: [userId], references: [id])
+
+  @@map("device_fingerprints")
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  stripePaymentIntentId String @unique
+  amount        Int      // Amount in cents
+  status        String   @default("pending") // pending, succeeded, failed
+  email         String
+  firstName     String?
+  lastName      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relationships
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("payments")
+}
+
+model ReferralAttempt {
+  id            Int      @id @default(autoincrement())
+  ipAddress     String
+  subnet        String
+  fingerprint   String?
+  email         String
+  referralCode  String?
+  status        String   @default("attempted") // attempted, blocked, allowed
+  reason        String?
+  createdAt     DateTime @default(now())
+
+  @@map("referral_attempts")
+}
